@@ -1,0 +1,7 @@
+Flask>=2.0
+Flask-SQLAlchemy>=2.5
+werkzeug>=2.0
+opencv-python-headless
+numpy
+gunicorn
+psycopg2-binary
