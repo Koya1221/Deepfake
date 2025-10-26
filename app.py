@@ -78,7 +78,6 @@ def heuristic_deepfake_score(frames):
 # ---------- Routes ----------
 @app.route("/")
 def index():
-    # When rendering Jinja templates, use render_template (do NOT serve HTML file directly).
     return render_template("index.html")
 
 @app.route("/uploads/<path:filename>")
@@ -131,7 +130,18 @@ def login():
     session["user_id"] = u.id
     return jsonify({"msg": "ok"})
 
-# CLI helper to init DB
+# ---------- Manual DB init route (for Render Free plan) ----------
+@app.route("/initdb")
+def initdb_route():
+    """Tạo database và bảng nếu chưa có (dùng khi không có shell access)."""
+    try:
+        with app.app_context():
+            db.create_all()
+        return "✅ Database initialized successfully!"
+    except Exception as e:
+        return f"❌ Error initializing DB: {e}"
+
+# ---------- CLI ----------
 @app.cli.command("init-db")
 def init_db():
     db.create_all()
