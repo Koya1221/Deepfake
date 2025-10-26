@@ -138,7 +138,9 @@ def init_db():
     print("DB initialized.")
 
 if __name__ == "__main__":
-    # Create DB if not exists (for SQLite dev)
+    # Tạo DB nếu chưa có (SQLite) – cần context
     if "sqlite" in database_url and not (BASE_DIR / "app.db").exists():
-        db.create_all()
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=True)
+        with app.app_context():
+            db.create_all()
+
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
